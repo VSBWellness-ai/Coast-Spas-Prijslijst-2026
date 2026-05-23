@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Coast Spas — Prijslijst 2026</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f4f8;color:#1a2332;-webkit-text-size-adjust:100%;}
+
+/* TOP BAR */
+.topbar{background:linear-gradient(135deg,#1a2332 0%,#2c3e55 100%);color:white;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,0.3);}
+.topbar-left{display:flex;align-items:center;gap:12px;}
+.cs-logo{height:36px;width:auto;}
+.tbtitle{font-size:15px;font-weight:700;letter-spacing:0.02em;}
+.tbsub{font-size:11px;opacity:0.7;margin-top:1px;}
+.cart-btn{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:10px;color:white;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;white-space:nowrap;font-family:inherit;backdrop-filter:blur(4px);}
+.cart-btn:active{background:rgba(255,255,255,0.25);}
+.cart-btn svg{width:18px;height:18px;stroke:white;fill:none;stroke-width:2;}
+.badge{background:#00a8e8;color:white;border-radius:999px;font-size:11px;font-weight:700;padding:1px 7px;min-width:20px;text-align:center;}
+
+/* FILTER */
+.filter-wrap{background:white;border-bottom:1px solid #dde3ea;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap;padding:10px 12px;box-shadow:0 1px 4px rgba(0,0,0,0.06);}
+.filter-btn{display:inline-block;background:transparent;border:1px solid #c8d0da;border-radius:999px;padding:6px 14px;font-size:12px;font-weight:500;cursor:pointer;color:#5a6a7e;margin-right:6px;font-family:inherit;white-space:nowrap;transition:all 0.15s;}
+.filter-btn:hover{background:#f0f4f8;color:#1a2332;}
+.filter-btn.active{background:#1a2332;color:white;border-color:#1a2332;}
+
+/* MAIN */
+.main{padding:14px 12px 120px;}
+
+/* SECTION */
+.section{margin-bottom:16px;background:white;border-radius:14px;border:1px solid #dde3ea;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.05);}
+.section-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#5a6a7e;padding:11px 16px;background:linear-gradient(135deg,#f8fafc,#f0f4f8);border-bottom:1px solid #dde3ea;}
+
+/* CARD GRID for models with images */
+.model-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;}
+.model-card{border-right:1px solid #f0f4f8;border-bottom:1px solid #f0f4f8;padding:12px;cursor:pointer;transition:background 0.1s;-webkit-tap-highlight-color:transparent;position:relative;}
+.model-card:nth-child(2n){border-right:none;}
+.model-card:hover{background:#f8fafc;}
+.model-card.selected{background:#e8f4ff;}
+.model-img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;background:#f0f4f8;display:block;margin-bottom:8px;}
+.model-img-placeholder{width:100%;aspect-ratio:1;background:linear-gradient(135deg,#e8edf3,#d4dce6);border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:8px;}
+.model-img-placeholder svg{width:40px;height:40px;opacity:0.3;}
+.check-badge{position:absolute;top:10px;left:10px;width:24px;height:24px;border-radius:6px;border:2px solid #c8d0da;background:white;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
+.model-card.selected .check-badge{background:#00a8e8;border-color:#00a8e8;}
+.check-badge svg{width:13px;height:13px;stroke:white;fill:none;stroke-width:3;display:none;}
+.model-card.selected .check-badge svg{display:block;}
+.model-name{font-size:12px;font-weight:600;color:#1a2332;line-height:1.3;margin-bottom:3px;}
+.model-jets{font-size:11px;color:#7a8a9e;margin-bottom:5px;}
+.model-price{font-size:14px;font-weight:700;color:#1a2332;}
+.model-price.alt{color:#00a8e8;}
+.qty-row{display:flex;align-items:center;gap:6px;margin-top:6px;}
+.qty-btn{width:24px;height:24px;border-radius:5px;background:#f0f4f8;border:none;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#1a2332;line-height:1;font-family:inherit;}
+.qty-btn:active{background:#dde3ea;}
+.qty-num{font-size:12px;font-weight:700;min-width:16px;text-align:center;color:#1a2332;}
+
+/* DRAWER */
+.drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;display:none;opacity:0;transition:opacity 0.25s;}
+.drawer-overlay.open{display:block;opacity:1;}
+.drawer{position:fixed;bottom:0;left:0;right:0;background:white;border-radius:20px 20px 0 0;z-index:201;transform:translateY(100%);transition:transform 0.3s cubic-bezier(0.32,0.72,0,1);max-height:90vh;display:flex;flex-direction:column;box-shadow:0 -8px 32px rgba(0,0,0,0.2);}
+.drawer.open{transform:translateY(0);}
+.drawer-handle{width:36px;height:4px;background:#dde3ea;border-radius:2px;margin:12px auto 0;}
+.drawer-head{padding:14px 18px 10px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #f0f4f8;}
+.drawer-head h2{font-size:17px;font-weight:700;color:#1a2332;}
+.drawer-close{background:none;border:none;font-size:24px;color:#9aabb8;cursor:pointer;padding:0 4px;line-height:1;}
+.drawer-clear{font-size:13px;color:#cc3333;background:none;border:none;cursor:pointer;font-family:inherit;}
+.drawer-items{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.drawer-empty{padding:40px 20px;text-align:center;color:#9aabb8;font-size:14px;line-height:1.7;}
+.ci{display:flex;align-items:center;gap:10px;padding:10px 18px;border-bottom:1px solid #f5f8fa;}
+.ci:last-child{border-bottom:none;}
+.ci-img{width:44px;height:44px;border-radius:8px;object-fit:cover;background:#f0f4f8;flex-shrink:0;}
+.ci-info{flex:1;min-width:0;}
+.ci-name{font-size:13px;font-weight:600;color:#1a2332;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.ci-sub{font-size:11px;color:#9aabb8;margin-top:2px;}
+.ci-right{text-align:right;flex-shrink:0;}
+.ci-price{font-size:13px;font-weight:700;color:#1a2332;}
+.ci-qp{font-size:11px;color:#9aabb8;margin-top:1px;}
+.ci-rm{background:none;border:none;color:#dde3ea;font-size:22px;line-height:1;cursor:pointer;padding:0 2px;flex-shrink:0;}
+.ci-rm:active{color:#cc3333;}
+
+/* FOOTER */
+.drawer-foot{border-top:1px solid #dde3ea;padding:14px 18px;background:#fafbfc;}
+.total-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px;}
+.total-label{font-size:15px;font-weight:600;color:#1a2332;}
+.total-val{font-size:22px;font-weight:800;color:#00a8e8;}
+.btn-mail{width:100%;background:linear-gradient(135deg,#1a2332,#2c3e55);color:white;border:none;border-radius:12px;padding:15px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 16px rgba(26,35,50,0.3);}
+.btn-mail:disabled{background:#c8d0da;box-shadow:none;cursor:default;}
+.btn-mail svg{width:20px;height:20px;stroke:white;fill:none;stroke-width:2;}
+
+/* MAIL MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:300;display:none;align-items:flex-end;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal{background:white;border-radius:20px 20px 0 0;width:100%;padding:22px 18px 36px;max-height:85vh;overflow-y:auto;}
+.modal h3{font-size:18px;font-weight:700;color:#1a2332;margin-bottom:16px;}
+.field{margin-bottom:13px;}
+.field label{display:block;font-size:12px;font-weight:600;color:#5a6a7e;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.06em;}
+.field input,.field textarea{width:100%;border:1.5px solid #c8d0da;border-radius:10px;padding:12px;font-size:15px;font-family:inherit;color:#1a2332;background:white;outline:none;-webkit-appearance:none;}
+.field input:focus,.field textarea:focus{border-color:#00a8e8;}
+.field textarea{height:90px;resize:none;}
+.modal-btns{display:flex;gap:10px;margin-top:18px;}
+.btn-cancel{flex:1;background:#f0f4f8;color:#1a2332;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;}
+.btn-send{flex:2;background:linear-gradient(135deg,#1a2332,#2c3e55);color:white;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <div>
+      <div class="tbtitle">Coast Spas — Prijslijst 2026</div>
+      <div class="tbsub">Tik op een model om te selecteren</div>
+    </div>
+  </div>
+  <button class="cart-btn" onclick="openDrawer()">
+    <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+    Selectie <span class="badge" id="cart-badge">0</span>
+  </button>
+</div>
+
+<div class="filter-wrap">
+  <button class="filter-btn active" onclick="filter('all',this)">Alles</button>
+  <button class="filter-btn" onclick="filter('classic',this)">Classic</button>
+  <button class="filter-btn" onclick="filter('elite',this)">Elite</button>
+  <button class="filter-btn" onclick="filter('luxury',this)">Luxury</button>
+  <button class="filter-btn" onclick="filter('opulence',this)">Opulence</button>
+  <button class="filter-btn" onclick="filter('swimspa',this)">Swim Spas</button>
+</div>
+
+<div class="main" id="sections-container"></div>
+
+<div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-handle"></div>
+  <div class="drawer-head">
+    <h2>Mijn selectie</h2>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <button class="drawer-clear" onclick="clearCart()">Wis alles</button>
+      <button class="drawer-close" onclick="closeDrawer()">×</button>
+    </div>
+  </div>
+  <div class="drawer-items" id="drawer-items"></div>
+  <div class="drawer-foot">
+    <div class="total-row">
+      <span class="total-label">Totaal incl. btw</span>
+      <span class="total-val" id="drawer-total">€ 0,00</span>
+    </div>
+    <button class="btn-mail" id="btn-mail" onclick="openMailModal()" disabled>
+      <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      Mailen
+    </button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="mail-modal">
+  <div class="modal">
+    <h3>Selectie mailen</h3>
+    <div class="field"><label>Aan (e-mailadres)</label><input type="email" id="mail-to" placeholder="naam@voorbeeld.nl" inputmode="email"></div>
+    <div class="field"><label>Naam afzender (optioneel)</label><input type="text" id="mail-from-name" placeholder="Je naam"></div>
+    <div class="field"><label>Opmerking (optioneel)</label><textarea id="mail-note" placeholder="Bijv. offerte aanvraag..."></textarea></div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeMailModal()">Annuleren</button>
+      <button class="btn-send" onclick="sendMail()">Openen in Mail →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const BASE = "https://www.coastspas.com/online-ordering/img/2026/";
+
+// [cat, name, jets, price, imgKey, variant]
+// variant = extra label like "Curve", "High Profile" etc
+const PRODUCTS = [
+
+// ═══════════════════ CLASSIC ═══════════════════
+["classic","Classic Freedom Bench Low Profile",45,17555,"cs-f5b-patio21-side",""],
+["classic","Classic Freedom Bench High Profile",45,17953,"cs-f5b-patio21-side","HP"],
+["classic","Classic Freedom Bench Curve",45,18803,"cs-f5b-patio21-side","Curve"],
+["classic","Classic Omega Bench Low Profile",30,14902,"cs25-omegab-classic30-side",""],
+["classic","Classic Omega Bench High Profile",30,15300,"cs25-omegab-classic30-side","HP"],
+["classic","Classic Omega Lounge Low Profile",30,14902,"cs25-omegal-classic30-side",""],
+["classic","Classic Omega Lounge High Profile",30,15300,"cs25-omegal-classic30-side","HP"],
+["classic","Classic Element Bench Low Profile",45,16189,"cs25-elementb-classic40-side",""],
+["classic","Classic Element Bench High Profile",45,16587,"cs25-elementb-classic40-side","HP"],
+["classic","Classic Element Bench Curve",45,17438,"cs25-elementb-classic40-side","Curve"],
+["classic","Classic Element Lounge Low Profile",45,16189,"cs25-elementl-classic40-side",""],
+["classic","Classic Element Lounge High Profile",45,16587,"cs25-elementl-classic40-side","HP"],
+["classic","Classic Element Lounge Curve",45,17438,"cs25-elementl-classic40-side","Curve"],
+["classic","Classic Apex Bench Low Profile",45,17555,"cs25-apexb-classic40-side",""],
+["classic","Classic Apex Bench High Profile",45,17953,"cs25-apexb-classic40-side","HP"],
+["classic","Classic Apex Bench Curve",45,18803,"cs25-apexb-classic40-side","Curve"],
+["classic","Classic Apex Lounge Low Profile",45,17555,"cs25-apexl-classic40-side",""],
+["classic","Classic Apex Lounge High Profile",45,17953,"cs25-apexl-classic40-side","HP"],
+["classic","Classic Apex Lounge Curve",45,18803,"cs25-apexl-classic40-side","Curve"],
+["classic","Classic Mirage High Profile",45,20061,"cs25-mirage-classic40-side","HP"],
+["classic","Classic Mirage Curve",45,20912,"cs25-mirage-classic40-side","Curve"],
+["classic","Classic Duoscape",18,13455,"cs25-duoscape-side",""],
+["classic","Classic 2Purfikt",19,14312,"cs25-2purfikt-side",""],
+
+// ═══════════════════ ELITE ═══════════════════
+["elite","Elite Omega Bench",55,19715,"cs-omegab-elite50-side",""],
+["elite","Elite Omega Bench Curve",55,20565,"cs-omegab-elite50-side","Curve"],
+["elite","Elite Omega Lounge",55,19715,"cs-omegal-elite50-side",""],
+["elite","Elite Omega Lounge Curve",55,20565,"cs-omegal-elite50-side","Curve"],
+["elite","Elite Element Bench",55,20063,"cs-elementb-elite50-side",""],
+["elite","Elite Element Bench Curve",55,20914,"cs-elementb-elite50-side","Curve"],
+["elite","Elite Element Lounge",55,20592,"cs-elementl-elite50-side",""],
+["elite","Elite Element Lounge Curve",55,20914,"cs-elementl-elite50-side","Curve"],
+["elite","Elite Apex Bench",55,20063,"cs-apexb-elite50-side",""],
+["elite","Elite Apex Bench Curve",55,21443,"cs-apexb-elite50-side","Curve"],
+["elite","Elite Apex Lounge",55,20592,"cs-apexl-elite50-side",""],
+["elite","Elite Apex Lounge Curve",55,21443,"cs-apexl-elite50-side","Curve"],
+["elite","Elite HP 3\" Omega Bench",55,20626,"cs-omegab-elite50-side","HP 3\""],
+["elite","Elite HP 3\" Omega Bench Curve",55,21476,"cs-omegab-elite50-side","HP 3\" Curve"],
+["elite","Elite HP 3\" Omega Lounge",55,20626,"cs-omegal-elite50-side","HP 3\""],
+["elite","Elite HP 3\" Omega Lounge Curve",55,21476,"cs-omegal-elite50-side","HP 3\" Curve"],
+["elite","Elite HP 3\" Element Bench",55,20975,"cs-elementb-elite50-side","HP 3\""],
+["elite","Elite HP 3\" Element Bench Curve",55,21825,"cs-elementb-elite50-side","HP 3\" Curve"],
+["elite","Elite HP 3\" Element Lounge",55,20975,"cs-elementl-elite50-side","HP 3\""],
+["elite","Elite HP 3\" Element Lounge Curve",55,21825,"cs-elementl-elite50-side","HP 3\" Curve"],
+["elite","Elite HP 3\" Apex Bench",55,21503,"cs-apexb-elite50-side","HP 3\""],
+["elite","Elite HP 3\" Apex Bench Curve",55,22354,"cs-apexb-elite50-side","HP 3\" Curve"],
+["elite","Elite HP 3\" Apex Lounge",55,21503,"cs-apexl-elite50-side","HP 3\""],
+["elite","Elite HP 3\" Apex Lounge Curve",55,22354,"cs-apexl-elite50-side","HP 3\" Curve"],
+["elite","Elite Mirage Curve",55,24815,"cs-mirage-curve-elite50-side","Curve"],
+["elite","Elite Cascade II",47,29556,"cs26-cascade2-side",""],
+
+// ═══════════════════ LUXURY ═══════════════════
+["luxury","Luxury Element Bench",60,22446,"cs-elementb-luxury51-side",""],
+["luxury","Luxury Element Bench Curve",60,23297,"cs-elementb-luxury51-side","Curve"],
+["luxury","Luxury Element Bench VLux",60,23357,"cs-elementb-luxury51-side","VLux"],
+["luxury","Luxury Element Bench VLux Curve",60,24208,"cs-elementb-luxury51-side","VLux Curve"],
+["luxury","Luxury Element Lounge",60,22446,"cs-elementl-luxury51-side",""],
+["luxury","Luxury Element Lounge Curve",60,23297,"cs-elementl-luxury51-side","Curve"],
+["luxury","Luxury Element Lounge VLux",60,23357,"cs-elementl-luxury51-side","VLux"],
+["luxury","Luxury Element Lounge VLux Curve",60,24208,"cs-elementl-luxury51-side","VLux Curve"],
+["luxury","Luxury Apex Bench",65,23513,"cs-apexb-luxury51-side",""],
+["luxury","Luxury Apex Bench Curve",65,24363,"cs-apexb-luxury51-side","Curve"],
+["luxury","Luxury Apex Bench VLux",65,24208,"cs-apexb-luxury51-side","VLux"],
+["luxury","Luxury Apex Bench VLux Curve",65,25058,"cs-apexb-luxury51-side","VLux Curve"],
+["luxury","Luxury Apex Lounge",65,23513,"cs-apexl-luxury51-side",""],
+["luxury","Luxury Apex Lounge Curve",65,24363,"cs-apexl-luxury51-side","Curve"],
+["luxury","Luxury Apex Lounge VLux",65,24208,"cs-apexl-luxury51-side","VLux"],
+["luxury","Luxury Apex Lounge VLux Curve",65,25058,"cs-apexl-luxury51-side","VLux Curve"],
+["luxury","Luxury 2Purfikt HP",23,19112,"cs-2purfikt-side","HP"],
+["luxury","Luxury 2Purfikt Infinity HP",23,23114,"cs-2purfikt-side","Infinity HP"],
+["luxury","Luxury Mirage Curve",65,30987,"cs-mirage-curve-luxury65-side","Curve"],
+["luxury","Luxury Purfikt",39,29761,"cs-purfikt-side",""],
+["luxury","Luxury Cascade II",61,31109,"cs-cascade2-side",""],
+
+// ═══════════════════ OPULENCE ═══════════════════
+["opulence","Opulence Omega Bench VLux",60,27173,"cs-omegab-opulence-side","VLux"],
+["opulence","Opulence Omega Bench VLux Curve",60,28024,"cs-omegab-opulence-side","VLux Curve"],
+["opulence","Opulence Omega Lounge VLux",60,27173,"cs-omegal-opulence-side","VLux"],
+["opulence","Opulence Omega Lounge VLux Curve",60,28024,"cs-omegal-opulence-side","VLux Curve"],
+["opulence","Opulence Element Bench VLux",60,26996,"cs-elementb-opulence-side","VLux"],
+["opulence","Opulence Element Bench VLux Curve",60,27846,"cs-elementb-opulence-side","VLux Curve"],
+["opulence","Opulence Element Lounge VLux",60,26996,"cs-elementl-opulence-side","VLux"],
+["opulence","Opulence Element Lounge VLux Curve",60,27846,"cs-elementl-opulence-side","VLux Curve"],
+["opulence","Opulence Apex Bench VLux",65,27511,"cs-apexb-opulence-side","VLux"],
+["opulence","Opulence Apex Bench VLux Curve",65,28361,"cs-apexb-opulence-side","VLux Curve"],
+["opulence","Opulence Apex Lounge VLux",65,27511,"cs-apexl-opulence-side","VLux"],
+["opulence","Opulence Apex Lounge VLux Curve",65,28361,"cs-apexl-opulence-side","VLux Curve"],
+["opulence","Opulence DuoScape",32,19517,"cs-duoscape-side",""],
+["opulence","Opulence 2Purfikt",23,19517,"cs-2purfikt-side",""],
+["opulence","Opulence Cascade II",61,36421,"cs26-cascade2-side",""],
+
+// ═══════════════════ SWIM SPAS ═══════════════════
+["swimspa","13B — Lifestyle 24 Jets",24,33275,"ws-1302b-24-side",""],
+["swimspa","13B — Plunge 12 Jets",12,22619,"ws-1302b-24-side","Plunge"],
+["swimspa","14VE — Sport 33 Jets",33,39902,"ws-1400ve-30-side","Sport"],
+["swimspa","14VE — Sport Pro 33 Jets",33,41695,"ws-1400ve-30-side","Sport Pro"],
+["swimspa","16 — Sport 32 Jets",32,48778,"ws-1600-32-side","Sport"],
+["swimspa","16 — Sport Pro 32 Jets",32,52598,"ws-1600-32-side","Sport Pro"],
+["swimspa","17VE — Sport 52 Jets",52,48058,"ws-1700ve-49-side","Sport"],
+["swimspa","17VE — Sport Pro 52 Jets",52,51865,"ws-1700ve-49-side","Sport Pro"],
+["swimspa","21VE — Sport 52 Jets",52,77461,"ws-2100ve-67-side","Sport"],
+["swimspa","21VE — Sport Pro 52 Jets",52,81266,"ws-2100ve-67-side","Sport Pro"],
+];
+
+const LABELS = {
+  classic:"Classic Collection",
+  elite:"Elite Collection",
+  luxury:"Luxury Collection",
+  opulence:"Opulence Collection",
+  swimspa:"Swim Spas"
+};
+
+const cart = {};
+
+function uid(p){ return p[0]+"_"+p[2]+"_"+p[1].replace(/\W/g,""); }
+function fmt(n){ return "€ "+n.toLocaleString("nl-NL",{minimumFractionDigits:0,maximumFractionDigits:0}); }
+function getP(id){ return PRODUCTS.find(p=>uid(p)===id); }
+
+function imgUrl(p){
+  // Try the known pattern for Coast Spas model images
+  return BASE + p[4] + ".png";
+}
+
+function buildList(){
+  const c = document.getElementById("sections-container");
+  Object.keys(LABELS).forEach(cat => {
+    const ps = PRODUCTS.filter(p=>p[0]===cat);
+    const sec = document.createElement("div");
+    sec.className = "section";
+    sec.dataset.cat = cat;
+    let h = `<div class="section-title">${LABELS[cat]}</div><div class="model-grid">`;
+    ps.forEach(p => {
+      const id = uid(p);
+      const variant = p[5] ? `<span style="background:#e8f0f8;color:#4a6080;border-radius:4px;padding:1px 5px;font-size:10px;font-weight:600;margin-right:3px">${p[5]}</span>` : "";
+      h += `<div class="model-card" data-uid="${id}" onclick="toggle('${id}')">
+        <div class="check-badge"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div>
+        <img class="model-img" src="${imgUrl(p)}" alt="${p[1]}" loading="lazy"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="model-img-placeholder" style="display:none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><ellipse cx="12" cy="13" rx="7" ry="8"/><rect x="9" y="4" width="6" height="3" rx="1.5"/></svg>
+        </div>
+        <div class="model-name">${p[1]}</div>
+        <div class="model-jets">${p[2]} jets</div>
+        <div class="model-price">${fmt(p[3])}</div>
+        <div class="qty-row" id="qc_${id}" style="display:none" onclick="event.stopPropagation()">
+          <button class="qty-btn" onclick="chQty('${id}',-1)">−</button>
+          <span class="qty-num" id="qn_${id}">1</span>
+          <button class="qty-btn" onclick="chQty('${id}',1)">+</button>
+        </div>
+      </div>`;
+    });
+    h += "</div>";
+    sec.innerHTML = h;
+    c.appendChild(sec);
+  });
+}
+
+function toggle(id){
+  const el = document.querySelector(`.model-card[data-uid="${id}"]`);
+  const qc = document.getElementById("qc_"+id);
+  if(cart[id]){ delete cart[id]; el.classList.remove("selected"); qc.style.display="none"; }
+  else{ cart[id]=1; el.classList.add("selected"); qc.style.display="flex"; }
+  renderCart();
+}
+
+function chQty(id,d){
+  if(!cart[id]) return;
+  cart[id] = Math.max(1, cart[id]+d);
+  document.getElementById("qn_"+id).textContent = cart[id];
+  renderCart();
+}
+
+function clearCart(){
+  Object.keys(cart).forEach(id=>{
+    delete cart[id];
+    const el = document.querySelector(`.model-card[data-uid="${id}"]`);
+    if(el) el.classList.remove("selected");
+    const qc = document.getElementById("qc_"+id); if(qc) qc.style.display="none";
+    const qn = document.getElementById("qn_"+id); if(qn) qn.textContent="1";
+  });
+  renderCart();
+}
+
+function renderCart(){
+  const ids = Object.keys(cart);
+  const totalQty = ids.reduce((s,id)=>s+cart[id],0);
+  document.getElementById("cart-badge").textContent = totalQty;
+  const total = ids.reduce((s,id)=>{ const p=getP(id); return p?s+p[3]*cart[id]:s; },0);
+  document.getElementById("drawer-total").textContent = fmt(total);
+  document.getElementById("btn-mail").disabled = ids.length===0;
+
+  const di = document.getElementById("drawer-items");
+  if(!ids.length){
+    di.innerHTML = `<div class="drawer-empty">Nog geen modellen geselecteerd.<br>Tik op een model in de lijst.</div>`;
+    return;
+  }
+  di.innerHTML = ids.map(id=>{
+    const p = getP(id); if(!p) return "";
+    const qty = cart[id]; const sub = p[3]*qty;
+    return `<div class="ci">
+      <img class="ci-img" src="${imgUrl(p)}" alt="" loading="lazy" onerror="this.style.background='#e8edf3'">
+      <div class="ci-info">
+        <div class="ci-name">${p[1]}</div>
+        <div class="ci-sub">${p[2]} jets · ${LABELS[p[0]]}</div>
+      </div>
+      <div class="ci-right">
+        <div class="ci-price">${fmt(sub)}</div>
+        ${qty>1?`<div class="ci-qp">${qty} × ${fmt(p[3])}</div>`:""}
+      </div>
+      <button class="ci-rm" onclick="toggle('${id}')">×</button>
+    </div>`;
+  }).join("");
+}
+
+function filter(cat,btn){
+  document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  document.querySelectorAll(".section").forEach(s=>s.style.display=(cat==="all"||s.dataset.cat===cat)?"block":"none");
+}
+
+function openDrawer(){ document.getElementById("drawer").classList.add("open"); document.getElementById("drawer-overlay").classList.add("open"); document.body.style.overflow="hidden"; }
+function closeDrawer(){ document.getElementById("drawer").classList.remove("open"); document.getElementById("drawer-overlay").classList.remove("open"); document.body.style.overflow=""; }
+function openMailModal(){ document.getElementById("mail-modal").classList.add("open"); }
+function closeMailModal(){ document.getElementById("mail-modal").classList.remove("open"); }
+
+function sendMail(){
+  const ids = Object.keys(cart);
+  const now = new Date().toLocaleDateString("nl-NL",{day:"2-digit",month:"long",year:"numeric"});
+  const name = document.getElementById("mail-from-name").value.trim();
+  const note = document.getElementById("mail-note").value.trim();
+  const to = document.getElementById("mail-to").value.trim();
+  let body = "Coast Spas — Mijn selectie\n";
+  body += "Prijslijst 2026 | "+now+"\n";
+  if(name) body += "Samengesteld door: "+name+"\n";
+  if(note) body += "\nOpmerking: "+note+"\n";
+  body += "\n";
+  body += "MODEL                                        JETS   AANTAL         PRIJS\n";
+  body += "-------------------------------------------------------------------------\n";
+  let total = 0;
+  ids.forEach(id=>{
+    const p = getP(id); if(!p) return;
+    const qty = cart[id]; const sub = p[3]*qty; total += sub;
+    const nm = p[1].substring(0,42).padEnd(42);
+    const jets = String(p[2]+" jets").padEnd(6);
+    body += nm+" "+jets+" "+String(qty).padStart(6)+"  "+fmt(sub).padStart(12)+"\n";
+  });
+  body += "-------------------------------------------------------------------------\n";
+  body += "TOTAAL INCL. BTW".padEnd(58)+fmt(total).padStart(12)+"\n";
+  body += "\nPrijzen onder voorbehoud | coastspas.com";
+  window.location.href = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent("Coast Spas — Mijn selectie 2026")}&body=${encodeURIComponent(body)}`;
+  closeMailModal();
+}
+
+buildList();
+renderCart();
+</script>
+</body>
+</html>
